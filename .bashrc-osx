@@ -232,5 +232,5 @@ PS4='+ '
 # Activate the prompt code
 __prompt_activate
 
-alias ls='ls -G'
+alias ls='ls -h --color'
 alias subl='/Applications/Sublime\ Text.app/Contents/SharedSupport/bin/subl'
