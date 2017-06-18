@@ -1,3 +1,11 @@
+##########################################################################
+# sugguested: 
+# 1. Install vcsprompt: 
+#      1) hg clone https://bitbucket.org/mitsuhiko/vcprompt
+#      2) make
+#      3) sudo cp vcprompt /usr/local/bin
+##########################################################################
+
 # Copy from: https://datamaskinen.medeltiden.org/tools/bash-prompt-v2.html
 # ------------------------------------------------------------------------------
 # Aliases for host and user names
