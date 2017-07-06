@@ -1,0 +1,121 @@
+##########################################################################
+# sugguested: 
+# 1. Install vcsprompt: 
+#      1) hg clone https://bitbucket.org/mitsuhiko/vcprompt
+#      2) make
+#      3) sudo cp vcprompt /usr/local/bin
+##########################################################################
+
+# Copy from: https://datamaskinen.medeltiden.org/tools/bash-prompt-v2.html
+# ------------------------------------------------------------------------------
+# Aliases for host and user names
+#
+
+# ------------------------------------------------------------------------------
+# Bash PROMPT
+#
+
+
+function __prompt_date {
+    echo -n `date +%H:%M`
+}
+
+# SSH agent indicator
+function __prompt_ssh_agent {
+    if [ -n "${SSH_CLIENT}" ] && [ -n "${SSH_AUTH_SOCK}" ] && [ -e "${SSH_AUTH_SOCK}" ]; then
+        echo -n "@"
+    fi
+}
+
+# SSH session session indicator
+function __prompt_ssh {
+    if [ -n "$SSH_CLIENT" ]; then
+        echo -n 'ssh'
+    fi
+}
+
+
+#
+function __prompt_last {
+  if [[ $EUID -eq 0 ]]; then
+      if [[ ${RET} = "0" ]]; then
+          echo -n "#"
+      else
+          echo -n '!!! #'
+      fi
+  else
+      if [[ ${RET} = "0" ]]; then
+          echo -n "\$"
+      else
+          echo -n '¤%&!'
+      fi
+  fi
+}
+
+
+PROMPT_COMMAND='export RET=$?;'
+
+# Set up prompt
+function __prompt_activate {
+
+    local resetFormating="\[\033[0m\]"     # reset text format
+
+    # regular colors
+    local black="\[\033[0;30m\]"
+    local red="\[\033[0;31m\]"
+    local green="\[\033[0;32m\]"
+    local yellow="\[\033[0;33m\]"
+    local blue="\[\033[0;34m\]"
+    local magenta="\[\033[0;35m\]"
+    local cyan="\[\033[0;36m\]"
+    local white="\[\033[0;37m\]"
+
+    # High intensity colors
+    local blackH="\[\033[0;90m\]"
+    local redH="\[\033[0;91m\]"
+    local greenH="\[\033[0;92m\]"
+    local yellowH="\[\033[0;93m\]"
+    local blueH="\[\033[0;94m\]"
+    local magentaH="\[\033[0;95m\]"
+    local cyanH="\[\033[0;96m\]"
+    local whiteH="\[\033[0;97m\]"
+
+    # background colors
+    local blackB="\[\033[40m\]"
+    local redB="\[\033[41m\]"
+    local greenB="\[\033[42m\]"
+    local yellowB="\[\033[43m\]"
+    local blueB="\[\033[44m\]"
+    local magentaB="\[\033[45m\]"
+    local cyanB="\[\033[46m\]"
+    local whiteB="\[\033[47m\]"
+
+    local HOST_COLOR=${white}${blackB}
+
+    # Set title in xterm*
+    case $TERM in
+        xterm*|rxvt*)
+            TITLEBAR='\[\033]0;\u@\h:\w\007\]'
+            ;;
+        *)
+            TITLEBAR=""
+            ;;
+    esac
+
+# Set the prompt
+PS1="${TITLEBAR}\
+${red}\$(__prompt_date) \
+${yellow}\$(whoami)${redH}@${HOST_COLOR}\$(hostname)\
+${cyan}\$(pwd) \
+${white}${magentaB}\$(__prompt_ssh_agent)${black}${magentaB}\$(__prompt_ssh)\
+${magenta}\$(__prompt_last) \
+${resetFormating}"
+PS2='> '
+PS4='+ '
+}
+
+
+# Activate the prompt code
+__prompt_activate
+
+alias ls='ls -h --color'
